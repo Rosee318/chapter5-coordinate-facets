@@ -13,3 +13,12 @@ ggplot(cafe %>% gather("dates", "value", 2:7),
   geom_bar(stat = "identity", position = "dodge") +
   theme_bw(base_family = "NanumGothic") +
   facet_wrap(.~dates)
+
+
+df_bus <- read_csv("bus.csv")
+ggplot(df_bus, aes(x=year, y=total, group = dong, colour = dong)) + 
+  geom_line(size = 0.8) + 
+  geom_point() +
+  facet_wrap(. ~ dong) +
+  guides(colour=FALSE) +
+  geom_text(aes(label = total), vjust = -1.2)
