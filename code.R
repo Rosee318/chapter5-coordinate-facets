@@ -36,29 +36,46 @@ ggplot(aes(x = reorder(name, `2017`), y = `2017`, fill = category)) +
   coord_flip()
 
 #--------------------------------------------------------------
-# facet을 알아보자
+# facet : facet_grid  & facet_wrap
+#--------------------------------------------------------------
+t <- ggplot(mpg, aes(x = cty, y = hwy)) + 
+  geom_point()
+
+t + facet_grid(. ~ fl) # 열을 기준으로 grid 구분
+t + facet_grid(fl ~ .) # 행을 기준으로 grid 구분
+t + facet_grid(year ~ fl) # 행은 연도 열은 fl을 기준으로 grid 구분
+t + facet_wrap(~fl) # 열을 기준으로 multi charts
+t + facet_wrap(~fl) # 열을 기준으로 multi charts
+
+#--------------------------------------------------------------
+# facet실습
 #--------------------------------------------------------------
 cafe <- read_csv("cafe.csv")
 head(cafe)
 
-ggplot(cafe, aes(x=행정구역, y=`2014년06월`)) +
-  geom_bar(stat = "identity") +
-  theme_bw(base_family = "NanumGothic") +
-  geom_hline(yintercept = median(cafe$`2014년06월`, na.rm = T), 
-             color = "red",
-             linetype = "dashed")
-
+# dates를 열을 기준으로 나눠보자
 ggplot(cafe %>% gather("dates", "value", 2:7), 
        aes(x=행정구역, y=value, fill=dates)) +
   geom_bar(stat = "identity", position = "dodge") +
-  theme_bw(base_family = "NanumGothic") +
-  facet_wrap(.~dates)
+  theme_fivethirtyeight(base_family = "NanumGothic") +
+  facet_grid(.~dates)
 
+# dates를 열을 기준으로 나눠보자
+ggplot(cafe %>% gather("dates", "value", 2:7), 
+       aes(x=행정구역, y=value, fill=dates)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_fivethirtyeight(base_family = "NanumGothic") +
+  facet_wrap(~dates, scales = "free")
 
+# dates를 열을 기준으로 나눠보자
+ggplot(cafe %>% gather("dates", "value", 2:7), 
+       aes(x=행정구역, y=value, fill=dates)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_fivethirtyeight(base_family = "NanumGothic") +
+  facet_wrap(~행정구역, scales = "free", ncol = 5, labeller = label_both)
+
+# 스스로 만들어봅시다
 df_bus <- read_csv("bus.csv")
-ggplot(df_bus, aes(x=year, y=total, group = dong, colour = dong)) + 
-  geom_line(size = 0.8) + 
-  geom_point() +
-  facet_wrap(. ~ dong) +
-  guides(colour=FALSE) +
-  geom_text(aes(label = total), vjust = -1.2)
+
+  
+
