@@ -15,7 +15,7 @@ p + coord_cartesian(xlim = c(4.5, 5.5)) # coord_cartesian
 #--------------------------------------------------------------
 # coordinates : coord_flip
 #--------------------------------------------------------------
-jeonpo <- read_csv("cafe_jeonpo.csv")
+jeonpo <- read_csv("data/cafe_jeonpo.csv")
 
 # 데이터저널리즘 기사는 데스크탑에만 보는게 아니죠. 그럴때 coord_flip!
 ggplot(jeonpo, aes(x = reorder(name, -`2017`), y = `2017`)) +
@@ -50,7 +50,7 @@ t + facet_wrap(~fl) # 열을 기준으로 multi charts
 #--------------------------------------------------------------
 # facet실습
 #--------------------------------------------------------------
-cafe <- read_csv("cafe.csv")
+cafe <- read_csv("data/cafe.csv")
 head(cafe)
 
 # dates를 열을 기준으로 나눠보자
@@ -75,7 +75,7 @@ ggplot(cafe %>% gather("dates", "value", 2:7),
   facet_wrap(~행정구역, scales = "free", ncol = 5, labeller = label_both)
 
 # 스스로 만들어봅시다
-df_bus <- read_csv("bus.csv")
+df_bus <- read_csv("data/bus.csv")
 
   
 
