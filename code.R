@@ -1,5 +1,6 @@
 library(tidyverse)
 library(ggthemes)
+library(gcookbook)
 
 #--------------------------------------------------------------
 # coordinates : coord_cartesian
@@ -34,6 +35,35 @@ ggplot(aes(x = reorder(name, `2017`), y = `2017`, fill = category)) +
        subtitile = "카페, 디저트, 가게 중심으로", 
        caption = "출처 : 정보공개청구") +
   coord_flip()
+
+#--------------------------------------------------------------
+# coord_fixed()
+#--------------------------------------------------------------
+
+fixed <- ggplot(marathon, aes(x=Half, y=Full)) + geom_point()
+fixed2 <- fixed + coord_fixed()
+
+gridExtra::grid.arrange(fixed, fixed2)
+
+#--------------------------------------------------------------
+# tips : label 수정
+#--------------------------------------------------------------
+hwp <- ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point()
+hwp
+
+hwp + scale_y_continuous(breaks = c(50, 56, 60, 66, 72), 
+                         labels = c("Seoul", "Busan", "Gwang-ju", "Ulsan", "Daejeon"))
+
+# custom을 위해서는 함수를 만들어야 가능 or scales패키지 기능 사용
+# 1 inch = 2.54cm
+
+formatter <- function(x) {
+  cm <- x * 2.54
+  return(paste(cm, "cm", sep=""))
+}
+formatter(70)
+
+hwp + scale_y_continuous(labels = formatter)
 
 #--------------------------------------------------------------
 # facet : facet_grid  & facet_wrap
